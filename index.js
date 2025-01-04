@@ -31,7 +31,7 @@ app.use(express.json());
 app.use(rateLimiter({ windowMs: 15 * 60 * 1000, max: 100, headers: true }));
 
 app.all('/player/login/dashboard', function (req, res) {
-    console.log("Request Body:", req.body);  
+   
     const tData = {};
     try {
         const uData = JSON.stringify(req.body).split('"')[1].split('\\n');
@@ -42,9 +42,7 @@ app.all('/player/login/dashboard', function (req, res) {
             const d = uData[i].split('|');
             tData[d[0]] = d[1];
         }
-        if (uName[1] && uPass[1]) { 
-            res.redirect('/player/growid/login/validate'); 
-        }
+
     } catch (why) {
         console.log(`Warning: ${why}`); 
     }
