@@ -71,56 +71,25 @@ async function trackIP() {
 }
 
 
-const atob = require('atob');
+
   
 
 app.all('/player/growid/login/validate', async (req, res) => {
-    const _token = req.body._token; // _token is expected to be a JSON string
+    const _token = req.body._token;
+    console.log(_token);
     const growId = req.body.growId;
     const password = req.body.password;
     const type = req.body.type;
     const ipInfo = await trackIP();
-
-    let tokenData;
-    tokenData = JSON.parse(atob(_token));
     const token = Buffer.from(
-        `&tankIDName=${tokenData.tankIDName || ''}` +
-        `&tankIDPass=${tokenData.tankIDPass || ''}` +
-        `&requestedName=${tokenData.requestedName || ''}` +
-        `&f=${tokenData.f || ''}` +
-        `&protocol=${tokenData.protocol || ''}` +
-        `&game_version=${tokenData.game_version || ''}` +
-        `&fz=${tokenData.fz || ''}` +
-        `&cbits=${tokenData.cbits || ''}` +
-        `&player_age=${tokenData.player_age || ''}` +
-        `&GDPR=${tokenData.GDPR || ''}` +
-        `&category=${tokenData.category || ''}` +
-        `&totalPlaytime=${tokenData.totalPlaytime || ''}` +
-        `&klv=${tokenData.klv || ''}` +
-        `&hash2=${tokenData.hash2 || ''}` +
-        `&meta=${tokenData.meta || ''}` +
-        `&fhash=${tokenData.fhash || ''}` +
-        `&rid=${tokenData.rid || ''}` +
-        `&platformID=${tokenData.platformID || ''}` +
-        `&deviceVersion=${tokenData.deviceVersion || ''}` +
-        `&country=${tokenData.country || ''}` +
-        `&hash=${tokenData.hash || ''}` +
-        `&mac=${tokenData.mac || ''}` +
-        `&wk=${tokenData.wk || ''}` +
-        `&growId=${growId}` +
-        `&password=${password}` +
-        `&type=${type}` +
-        `&ip=${ipInfo.ip}` +
-        `&city=${ipInfo.kota}` +
-        `&region=${ipInfo.daerah}` +
-        `&zip=${ipInfo.kodePos}` +
-        `&negara=${ipInfo.negara}`,
-    ).toString('base64');
-
+        `_token=${_token}&growId=${growId}&password=${password}&type=${type}&ip=${ipInfo.ip}&city=${ipInfo.kota}&region=${ipInfo.daerah}&zip=${ipInfo.kodePos}&negara=${ipInfo.negara}`,
+      ).toString('base64');
+    
     res.send(
         `{"status":"success","message":"Account Validated.","token":"${token}","url":"","accountType":"growtopia"}`,
     );
 });
+
 
 app.all('/player/*', function (req, res) {
     res.status(301).redirect('https://api.yoruakio.tech/player/' + req.path.slice(8));
