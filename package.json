@@ -12,18 +12,21 @@
         "type": "git",
         "url": "git+https://github.com/YoruAkio/GrowtopiaLogin-Backend.git"
     },
-    "author": "YoruAkio <yoruakio@proton.me>",
+    "author": "YoruAkio <yoruakio@proton.me> remake by skydev",
     "license": "MIT",
     "bugs": {
         "url": "https://github.com/YoruAkio/GrowtopiaLogin-Backend/issues"
     },
     "homepage": "https://github.com/YoruAkio/GrowtopiaLogin-Backend#readme",
     "dependencies": {
+        "axios": "^1.7.9",
         "body-parser": "^1.20.2",
         "compression": "^1.7.5",
+        "cookie-parser": "^1.4.7",
         "ejs": "^3.1.10",
-        "express": "^4.19.2",
+        "express": "^4.21.2",
         "express-rate-limit": "^7.4.0",
+        "node-fetch": "^3.3.2",
         "nodemon": "^3.1.7"
     }
 }
