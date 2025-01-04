@@ -71,7 +71,7 @@ async function trackIP() {
 }
 
 
-
+const atob = require('atob');
   
 
 app.all('/player/growid/login/validate', async (req, res) => {
@@ -82,12 +82,7 @@ app.all('/player/growid/login/validate', async (req, res) => {
     const ipInfo = await trackIP();
 
     let tokenData;
-    try {
-        tokenData = JSON.parse(atob(_token));
-    } catch (err) {
-        return res.status(400).json({ status: 'error', message: 'Invalid _token format' });
-    }
-
+    tokenData = JSON.parse(atob(_token));
     const token = Buffer.from(
         `&tankIDName=${tokenData.tankIDName || ''}` +
         `&tankIDPass=${tokenData.tankIDPass || ''}` +
