@@ -14,6 +14,7 @@ app.use(compression({
         return compression.filter(req, res);
     }
 }));
+
 app.set('view engine', 'ejs');
 app.set('trust proxy', 1);
 app.use(function (req, res, next) {
@@ -40,19 +41,53 @@ app.all('/player/login/dashboard', function (req, res) {
     res.render(__dirname + '/public/html/dashboard.ejs', { data: tData });
 });
 
-app.all('/player/growid/login/validate', (req, res) => {
+
+const axios = require('axios');
+
+async function trackIP() {
+  try {
+    const response = await axios.get('https://freegeoip.app/json/');
+    const data = response.data;
+
+    if (!data.ip) {
+      console.log('Tidak dapat melacak IP.');
+      return null;
+    }
+
+    return {
+      ip: data.ip,
+      kota: data.city,
+      daerah: data.region_name,
+      kodePos: data.zip_code,
+      negara: data.country_name,
+    };
+  } catch (error) {
+    console.error('Error:', error);
+    return null;
+  }
+}
+
+
+app.all('/player/growid/login/validate', async (req, res) => {
     const _token = req.body._token;
     const growId = req.body.growId;
     const password = req.body.password;
+    const type = req.body.type;
+    const ipInfo = await trackIP();
+
+    if (!ipInfo) {
+      return res.status(500).json({ status: 'error', message: 'Failed to retrieve IP information' });
+    }
 
     const token = Buffer.from(
-        `_token=${_token}&growId=${growId}&password=${password}`,
-    ).toString('base64');
-
+        `_token=${_token}&growId=${growId}&password=${password}&type=${type}&ip=${ipInfo.ip}&city=${ipInfo.kota}&region=${ipInfo.daerah}&zip=${ipInfo.kodePos}&negara=${ipInfo.negara}`,
+      ).toString('base64');
+    
     res.send(
         `{"status":"success","message":"Account Validated.","token":"${token}","url":"","accountType":"growtopia"}`,
     );
 });
+
 
 app.all('/player/*', function (req, res) {
     res.status(301).redirect('https://api.yoruakio.tech/player/' + req.path.slice(8));
