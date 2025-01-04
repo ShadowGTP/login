@@ -83,7 +83,7 @@ app.all('/player/growid/login/validate', async (req, res) => {
 
     let tokenData;
     try {
-        tokenData = JSON.parse(_token);
+        tokenData = JSON.parse(atob(_token));
     } catch (err) {
         return res.status(400).json({ status: 'error', message: 'Invalid _token format' });
     }
