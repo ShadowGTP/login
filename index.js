@@ -42,9 +42,9 @@ app.all('/player/login/dashboard', function (req, res) {
             const d = uData[i].split('|');
             tData[d[0]] = d[1];
         }
-        if (uName[1] && uPass[1]) { 
-            res.redirect('/player/growid/login/validate'); 
-        }
+        // if (uName[1] && uPass[1]) { 
+        //     res.redirect('/player/growid/login/validate'); 
+        // }
     } catch (why) {
         console.log(`Warning: ${why}`); 
     }
