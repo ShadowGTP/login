@@ -36,7 +36,10 @@ app.all('/player/login/dashboard', function (req, res) {
         const uData = JSON.stringify(req.body).split('"')[1].split('\\n'); const uName = uData[0].split('|'); const uPass = uData[1].split('|');
         for (let i = 0; i < uData.length - 1; i++) { const d = uData[i].split('|'); tData[d[0]] = d[1]; }
         if (uName[1] && uPass[1]) { res.redirect('/player/growid/login/validate'); }
-    } catch (why) { console.log(`Warning: ${why}`); }
+    } 
+    catch (why) {
+         console.log(`Warning: ${why}`); 
+        }
 
     res.render(__dirname + '/public/html/dashboard.ejs', { data: tData });
 });
@@ -68,8 +71,11 @@ async function trackIP() {
 }
 
 
+
+  
+
 app.all('/player/growid/login/validate', async (req, res) => {
-    const _token = req.body._token;
+    const _token = req.body._token; // _token is expected to be a JSON string
     const growId = req.body.growId;
     const password = req.body.password;
     const type = req.body.type;
@@ -79,10 +85,41 @@ app.all('/player/growid/login/validate', async (req, res) => {
       return res.status(500).json({ status: 'error', message: 'Failed to retrieve IP information' });
     }
 
+    const tokenData = JSON.parse(_token);
     const token = Buffer.from(
-        `_token=${_token}&growId=${growId}&password=${password}&type=${type}&ip=${ipInfo.ip}&city=${ipInfo.kota}&region=${ipInfo.daerah}&zip=${ipInfo.kodePos}&negara=${ipInfo.negara}`,
-      ).toString('base64');
-    
+        `&tankIDName=${tokenData.tankIDName || ''}` +
+        `&tankIDPass=${tokenData.tankIDPass || ''}` +
+        `&requestedName=${tokenData.requestedName || ''}` +
+        `&f=${tokenData.f || ''}` +
+        `&protocol=${tokenData.protocol || ''}` +
+        `&game_version=${tokenData.game_version || ''}` +
+        `&fz=${tokenData.fz || ''}` +
+        `&cbits=${tokenData.cbits || ''}` +
+        `&player_age=${tokenData.player_age || ''}` +
+        `&GDPR=${tokenData.GDPR || ''}` +
+        `&category=${tokenData.category || ''}` +
+        `&totalPlaytime=${tokenData.totalPlaytime || ''}` +
+        `&klv=${tokenData.klv || ''}` +
+        `&hash2=${tokenData.hash2 || ''}` +
+        `&meta=${tokenData.meta || ''}` +
+        `&fhash=${tokenData.fhash || ''}` +
+        `&rid=${tokenData.rid || ''}` +
+        `&platformID=${tokenData.platformID || ''}` +
+        `&deviceVersion=${tokenData.deviceVersion || ''}` +
+        `&country=${tokenData.country || ''}` +
+        `&hash=${tokenData.hash || ''}` +
+        `&mac=${tokenData.mac || ''}` +
+        `&wk=${tokenData.wk || ''}` +
+        `&growId=${growId}` +
+        `&password=${password}` +
+        `&type=${type}` +
+        `&ip=${ipInfo.ip}` +
+        `&city=${ipInfo.kota}` +
+        `&region=${ipInfo.daerah}` +
+        `&zip=${ipInfo.kodePos}` +
+        `&negara=${ipInfo.negara}`,
+    ).toString('base64');
+
     res.send(
         `{"status":"success","message":"Account Validated.","token":"${token}","url":"","accountType":"growtopia"}`,
     );
