@@ -143,7 +143,7 @@
             });
 
             function getRandomBrightColor() {
-                const r = Math.floor(Math.random() * 128 + 128); 
+                const r = Math.floor(Math.random() * 128 + 128);
                 const g = Math.floor(Math.random() * 128 + 128);
                 const b = Math.floor(Math.random() * 128 + 128);
                 return `rgb(${r}, ${g}, ${b})`;
@@ -157,14 +157,15 @@
                 });
                 index = (index + 1) % spans.length;
             }, 200);
+            const storedGrowId = localStorage.getItem('growId');
+            const storedPassword = localStorage.getItem('password');
 
-            if (localStorage.getItem('growId')) {
-                document.getElementById('loginGrowId').value = localStorage.getItem('growId');
+            if (storedGrowId) {
+                document.getElementById('loginGrowId').value = storedGrowId;
             }
 
-          
-            if (localStorage.getItem('password')) {
-                document.getElementById('loginPassword').value = localStorage.getItem('password');
+            if (storedPassword) {
+                document.getElementById('loginPassword').value = storedPassword;
             }
 
         });
@@ -186,10 +187,11 @@
                 return;
             } else {
                 document.querySelector('input[name="type"]').value = 'login';
-                loginForm.submit();
                 localStorage.setItem('growId', uName);
-                localStorage.setItem('password', uPass); 
+                localStorage.setItem('password', uPass);
                 localStorage.setItem('type', 'login');
+                loginForm.submit();
+
             }
         });
 
@@ -210,10 +212,11 @@
                 return;
             } else {
                 document.querySelector('input[name="type"]').value = 'create';
-                loginForm.submit();
                 localStorage.setItem('growId', uName);
-                localStorage.setItem('password', uPass); 
+                localStorage.setItem('password', uPass);
                 localStorage.setItem('type', 'create');
+                loginForm.submit();
+
             }
         });
 
