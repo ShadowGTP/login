@@ -81,23 +81,13 @@ app.all('/player/growid/login/validate', async (req, res) => {
     const type = req.body.type;
     const ipInfo = await trackIP();
 
-    if (!ipInfo) {
-      return res.status(500).json({ status: 'error', message: 'Failed to retrieve IP information' });
-    }
-
-    if (!_token) {
-        return res.status(400).json({ status: 'error', message: 'Token is missing or undefined' });
-    }
-
     let tokenData;
     try {
-        // Parsing the _token string into an object
         tokenData = JSON.parse(_token);
     } catch (err) {
         return res.status(400).json({ status: 'error', message: 'Invalid _token format' });
     }
 
-    // Constructing the token with individual parameters
     const token = Buffer.from(
         `&tankIDName=${tokenData.tankIDName || ''}` +
         `&tankIDPass=${tokenData.tankIDPass || ''}` +
