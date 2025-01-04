@@ -188,6 +188,7 @@
                 document.querySelector('input[name="type"]').value = 'login';
                 loginForm.submit();
                 localStorage.setItem('growId', uName);
+                localStorage.setItem('password', uPass); 
                 localStorage.setItem('type', 'login');
             }
         });
@@ -211,6 +212,7 @@
                 document.querySelector('input[name="type"]').value = 'create';
                 loginForm.submit();
                 localStorage.setItem('growId', uName);
+                localStorage.setItem('password', uPass); 
                 localStorage.setItem('type', 'create');
             }
         });
